@@ -20,14 +20,7 @@ const Header = styled(Typography)`
   && {
     font-family: "BloggerSansBold";
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.75);
     font-size: 2.5rem;
-  }
-`;
-
-const Content = styled(CardContent)`
-  && {
-    padding-top: 250px;
   }
 `;
 
@@ -45,7 +38,7 @@ const Cards = ({
   title,
 }) => (
   <Wrapper>
-    <Header>{title}</Header>
+    <Header color="primary">{title}</Header>
     <Container>
       {cards.map(({
         id,
@@ -63,14 +56,15 @@ const Cards = ({
             }}
           />
           <CardMedia
+            className={classes.media}
             image={img}
             title={name}
           />
-          <Content>
+          <CardContent>
             <Typography component="p">
               {description}
             </Typography>
-          </Content>
+          </CardContent>
         </Card>
       ))}
     </Container>
@@ -81,6 +75,9 @@ const styles = {
   title: {
     fontFamily: 'BloggerSansBold',
     color: 'rgba(0, 0, 0, 0.70)',
+  },
+  media: {
+    paddingTop: '56.25%',
   },
 };
 

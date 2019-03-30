@@ -6,6 +6,7 @@ import Loader from '../Loader';
 import Layout from '../Layout';
 import Header from './Header';
 import Cards from './Cards';
+import Volunteers from './Volunteers';
 import MainSection from '../MainSection';
 
 const Container = styled.div`
@@ -16,56 +17,24 @@ const Container = styled.div`
 
 const loadEvents = async (setEvents) => {
   const { events } = await (await fetch('/api/events/')).json();
+  setEvents(events);
 
   // Для красоты отображения loader-ов увеличиваем задержку на 1 секунду.
   await sleep(1000);
-
-  setEvents(events);
 };
 
-const loadPartners = async (setEvents) => {
-  /**
-   * TODO: loadCompanies
-   * const { companies } = await (await fetch('/api/companies/')).json();
-   */
+const loadPartners = async (setPartners) => {
+  const { partners } = await (await fetch('/api/partners/')).json();
+  setPartners(partners);
 
-  // Для красоты отображения loader-ов увеличиваем задержку на 1 секунду.
   await sleep(1000);
+};
 
-  setEvents([
-    {
-      id: 1,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 2,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 3,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 4,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-  ]);
+const loadVolunteers = async (setVolunteers) => {
+  const { volunteers } = await (await fetch('/api/volunteers/')).json();
+  setVolunteers(volunteers);
+
+  await sleep(1000);
 };
 
 const Home = () => {
@@ -83,7 +52,12 @@ const Home = () => {
     loadPartners(setPartners);
   }, []);
 
-  const loading = events.length === 0;
+  const [volunteers, setVolunteers] = React.useState([]);
+  React.useEffect(() => {
+    loadVolunteers(setVolunteers);
+  }, []);
+
+  const loading = events.length === 0 || partners.length === 0 || volunteers.length === 0;
 
   return (
     <Layout>
@@ -93,6 +67,7 @@ const Home = () => {
         <MainSection>
           <Cards cards={events} title="События" />
           <Cards cards={partners} title="Партнёры" />
+          <Volunteers volunteers={volunteers} />
         </MainSection>
       </Container>
     </Layout>
