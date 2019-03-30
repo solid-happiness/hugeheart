@@ -75,3 +75,24 @@ class Task(models.Model):
         max_length = 128,
     )
 
+
+class TaskComment(models.Model):
+    author = models.ForeignKey(
+        'main.UserProfile',
+        verbose_name = 'Автор комментария',
+        on_delete = models.SET_NULL,
+    )
+    text = models.TextField(
+        'Текст комментария',
+        max_length = 1024,
+    )
+    datetime = models.DateTimeField(
+        'Дата и время создания комментария',
+        auto_now_add = True,
+    )
+    task = models.ForeignKey(
+        Task,
+        verbose_name = 'Для задачи',
+        on_delete = models.CASCADE,
+    )
+
