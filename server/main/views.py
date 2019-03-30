@@ -40,7 +40,7 @@ def get_volunteers(request):
     """
     users = UserProfile.objects.all()
     return JsonResponse({
-        'volunteers': [user.to_dict() for user in users if user.role == '1']
+        'volunteers': [user.to_dict() for user in users if user.role == 'volunteer']
     })
 
 
