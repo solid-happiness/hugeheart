@@ -1,0 +1,72 @@
+{
+    "name": "Столовая №1",
+    "slug": "hot-dish",
+    "openTime": "07:15",
+    "closeTime": "20:15",
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae nostrum, qui atque vel nesciunt obcaecati esse nihil culpa blanditiis quos, laboriosam, placeat sed? Porro nulla in, quis quos facilis deserunt.",
+    "img": "/hot-dish.jpeg",
+    "menuGroups": [
+        {
+            "id": 2,
+            "slug": "economical",
+            "name": "Экономный обед",
+            "dishes": [
+                {
+                    "id": 223455,
+                    "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
+                    "price": 3500,
+                    "portion": "120 г",
+                    "netWeight": 120,
+                    "proteins": 2.88,
+                    "fats": 3,
+                    "carbohydrates": 3,
+                    "calorific": 200000
+                },
+                {
+                    "id": 123,
+                    "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
+                    "price": 3500,
+                    "portion": "120 г",
+                    "netWeight": 120,
+                    "proteins": 2.88,
+                    "fats": 3,
+                    "carbohydrates": 3,
+                    "calorific": 200000
+                },
+                {
+                    "id": 26,
+                    "name": "Капуста б/к с овощами, растительным маслом",
+                    "img": "/cabbage.jpg",
+                    "price": 3500,
+                    "portion": "120 г",
+                    "netWeight": 120,
+                    "proteins": 2.88,
+                    "fats": 3,
+                    "carbohydrates": 3,
+                    "calorific": 200000
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "slug": "diet",
+            "name": "Диетические блюда",
+            "dishes": [
+                {
+                    "id": 3245,
+                    "name": "Каша молочная манная с маслом",
+                    "img": "/milk-porridge.jpg",
+                    "price": 4000,
+                    "portion": "250 г",
+                    "netWeight": 250,
+                    "proteins": 13,
+                    "fats": 15,
+                    "carbohydrates": 21,
+                    "calorific": 400000
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+     "events": [
+          {
+               "id": 1,
+               "name": "Выставка",
+               "img": "img.png",
+               "slug": "vystovka",
+               "shortDescription": "hey hey hey"
+          }
+     ],
+     "partners": [
+          {
+               "id": 1,
+               "name": "Google",
+               "img": "google.png",
+               "slug": "google",
+               "shortDescription": "we from google"
+          }
+     ],
+     "voluntarios": [
+          {
+               "id": 1,
+               "name": "Дима",
+               "img": "profile.png",
+               "shortDescription": "top"
+          }
+     ]
+}
