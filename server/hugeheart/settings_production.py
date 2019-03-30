@@ -29,7 +29,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/srv/dining-room/logs/app.log',
+            'filename': '/srv/hugeheart/logs/app.log',
             'formatter': 'verbose',
         },
         'mail_admins': {
