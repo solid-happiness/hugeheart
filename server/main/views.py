@@ -74,10 +74,10 @@ def create_user_profile(request):
             username=request.POST.get('username'), 
             email=request.POST.get('email'), 
             password=validate_password(request.POST.get('password')), 
-            first_name=request.POST.get('first_name') or '', 
-            last_name=request.POST.get('last_name') or '',
-            short_description = request.POST.get('short_description') or '',
-            phone_number = request.POST.get('phone_number') or '',
+            first_name=request.POST.get('firstName') or '', 
+            last_name=request.POST.get('lastName') or '',
+            short_description = request.POST.get('shortDescription') or '',
+            phone_number = request.POST.get('phoneNumber') or '',
             role = request.POST.get('role'),
         )
         for _, file_content in request.FILES.items():
