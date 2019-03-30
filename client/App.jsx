@@ -17,7 +17,6 @@ import BloggerSansLightWoff from './fonts/BloggerSans-Light.woff';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
-  @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
   @import url('https://fonts.googleapis.com/css?family=Lora');
 
   @font-face {

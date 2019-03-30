@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 
 const Container = styled.div`
     display: flex;
@@ -20,17 +21,13 @@ const Container = styled.div`
     background-color: ${({ theme }) => theme.palette.secondary.main};
 `;
 
-const Logo = styled.header`
-    font-size: 4rem;
-    font-family: "Amatic SC";
-
-    @media screen and (max-width: 480px) {
-        font-size: 3rem;
-    }
-
-    @media screen and (min-width: 1200px) {
-        font-size: 5rem;
-    }
+const Description = styled(Typography)`
+  && {
+    font-size: 0.9rem;
+    color: white;
+    padding: 0 15px;
+    text-align: center;
+  }
 `;
 
 const IconWrapper = styled(FontAwesomeIcon)`
@@ -42,11 +39,13 @@ const IconWrapper = styled(FontAwesomeIcon)`
 `;
 
 const ProfileLink = styled(Link)`
-    && {
-        color: white;
-        font-family: "Amatic SC";
-        font-size: 1.5rem;
-    }
+  && {
+    display: block;
+    min-width: 200px;
+    font-family: "BloggerSansBold";
+    color: white;
+    font-size: 1rem;
+  }
 `;
 
 const ProfileItem = styled(ListItem)`
@@ -78,7 +77,11 @@ const Footer = ({ theme }) => (
   <Container
     theme={theme}
   >
-    <Logo>Огромное сердце</Logo>
+    <Description>
+        Федерация помощи Ольги Сергеенко «Огромное сердце»
+        занимается помощью взрослым людям с онкологическими заболеваниями,
+        оказывает консультационную, психологическую и юридическую поддержку.
+    </Description>
     <List>
       {profiles.map(({ name, icon, link }) => (
         <ProfileItem key={name}>
