@@ -112,3 +112,10 @@ class TaskComment(models.Model):
         on_delete = models.CASCADE,
     )
 
+    def to_dict(self):
+        return {
+            "author": self.author.get_full_name() or self.author.username,
+            "commentText": self.text,
+            "dateTimeCreate": self.datetime, 
+        }
+

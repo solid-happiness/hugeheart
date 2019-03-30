@@ -2,6 +2,9 @@ import json
 
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.password_validation import validate_password
+from django.core.validators import ValidationError
+from django.db import IntegrityError
 
 from .models import Partner, UserProfile
 from events import models
@@ -63,3 +66,29 @@ def login_view(request):
 
     else:
         return JsonResponse({'auth': False})
+
+
+def create_user_profile(request):
+    try:
+        user = UserProfile.objects.create_user(
+            username=request.POST.get('username'), 
+            email=request.POST.get('email'), 
+            password=validate_password(request.POST.get('password')), 
+            first_name=request.POST.get('first_name') or '', 
+            last_name=request.POST.get('last_name') or '',
+            short_description = request.POST.get('short_description') or '',
+            phone_number = request.POST.get('phone_number') or '',
+            role = request.POST.get('role'),
+        )
+        for _, file_content in request.FILES.items():
+            user.photo=file_content
+        user.save()
+        
+        return JsonResponse({**user.to_dict()})
+    except IntegrityError:
+        return JsonResponse({'error': 'Пользователь с таким ником уже существует'})
+    except ValidationError:
+        return JsonResponse({'error': 'Слишком легкий пароль'})
+
+    
+

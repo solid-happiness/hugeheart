@@ -50,7 +50,7 @@ class UserProfile(User):
     def to_dict(self):
         return {
             "id": self.id,
-            "name": self.username,
+            "name": self.get_full_name() or self.username,
             "img": str(self.photo) and self.photo.url,
             "shortDescription": self.short_description,
             "role": self.role,
