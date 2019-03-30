@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
@@ -18,7 +17,7 @@ const Container = styled.div`
 
 const ROOM_ACTIONS = {
   SET_LOADING: 0,
-  SET_PROFILE: 1,
+  SET_NEW_PROFILE: 1,
 };
 
 const rooms = (state, action) => {
@@ -28,7 +27,7 @@ const rooms = (state, action) => {
         ...state,
         loading: action.loading,
       };
-    case ROOM_ACTIONS.SET_ROOM:
+    case ROOM_ACTIONS.SET_NEW_PROFILE:
       return {
         ...state,
         ...action.payload,
@@ -39,9 +38,7 @@ const rooms = (state, action) => {
   }
 };
 
-
-// eslint-disable-next-line no-unused-vars
-const UserProfile = ({ match }) => {
+const UserProfile = () => {
   const [room] = React.useReducer(
     rooms,
     {
@@ -64,10 +61,6 @@ const UserProfile = ({ match }) => {
       </MainSection>
     </Layout>
   );
-};
-
-UserProfile.propTypes = {
-  match: PropTypes.object.isRequired,
 };
 
 export default UserProfile;
