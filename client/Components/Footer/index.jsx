@@ -78,7 +78,7 @@ const Footer = ({ theme }) => (
   <Container
     theme={theme}
   >
-    <Logo>ПОХАВАЙ!</Logo>
+    <Logo>Огромное сердце</Logo>
     <List>
       {profiles.map(({ name, icon, link }) => (
         <ProfileItem key={name}>

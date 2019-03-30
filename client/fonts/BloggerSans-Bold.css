@@ -1,0 +1,11 @@
+/* Webfont: BloggerSans-Bold */@font-face {
+    font-family: 'BloggerSans';
+    src: url('BloggerSans-Bold.eot'); /* IE9 Compat Modes */
+    src: url('BloggerSans-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('BloggerSans-Bold.woff') format('woff'), /* Modern Browsers */
+         url('BloggerSans-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const MainSection = styled.section`
   flex: 1;
-  padding: 64px 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   margin: 50px auto;

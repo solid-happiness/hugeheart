@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { generate } from 'shortid';
-import * as d3 from 'd3';
-import _ from 'lodash';
+import { withTheme } from '@material-ui/core/styles';
 
 const Container = styled.div`
   position: ${({ fullscreen }) => (fullscreen ? 'fixed' : 'absolute')};
@@ -18,85 +16,69 @@ const Container = styled.div`
   z-index: 9999;
 `;
 
-const Domino = styled.div`
-  display: inline-flex;
+const Spiner = styled.div``;
+
+const Heart = styled.div`
   width: 50px;
-  height: 50px;
-  margin: 25px;
-  background-color: ${({ color }) => color};
-  border-radius: 8px;
-  transform: rotate(45deg);
-  animation: domino-effect 2.4s infinite ease-in-out;
-  animation-delay: ${({ delay }) => delay}s;
-  
-  &::after {
-    content: '';
-    position: relative;
+  height: 45px;
+  display: inline-block;
+  opacity: 0.8;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    left: 25px;
     top: 0;
-    left: -70px;
-    opacity: 0;
-    width: 50px;
-    height: 50px;
-    animation: illusion 2.4s infinite ease-in-out;
-    animation-delay: ${({ delay }) => delay}s;
-    background-color: ${({ color }) => color};
-    border-radius: 8px;
-  }
+    width: 25px;
+    height: 40px;
+    background: ${({ theme }) => theme.palette.primary.main};
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
 
-  @media screen and (max-width: 480px) {
-    width: 35px;
-    height: 35px;
-    margin: 15px;
-
-    &::after {
-      width: 35px;
-      height: 35px;
-      left: -45px;
+    @media screen and (min-width: 720px) {
+      width: 45px;
+      height: 70px;
+      left: 45px;
     }
   }
 
-  @keyframes domino-effect {
-      20%, 100% {
-          transform: rotate(135deg);
-      }
+  @media screen and (min-width: 720px) {
+    width: 90px;
   }
 
-  @keyframes illusion {
-      0%, 25% {
-          opacity: 1;
-      }
+  &::after {
+    left: 0;
+    transform-origin: 100% 100%;
+    transform: rotate(45deg);
+  }
 
-      26%, 100% {
-          opacity: 0;
-      }
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  animation-fill-mode: both;
+
+  @keyframes bouncedelay {
+    0%, 80%, 100% {
+      transform: scale(0.0);
+    }
+
+    40% {
+      transform: scale(1.0);
+    }
   }
 `;
 
-const getColors = () => {
-  const interpolator = d3.interpolate('#283583', '#EB5B49');
-  return _.orderBy(
-    [...new Array(4)].map(() => Math.random()),
-    null,
-    Math.random() < 0.5 ? 'asc' : 'desc',
-  ).map(v => interpolator(v));
-};
-
-const Loader = ({ fullscreen, loading }) => {
+const Loader = ({ fullscreen, loading, theme }) => {
   if (!loading) {
     return null;
   }
 
-  const dominoes = getColors().map((color, idx) => ({
-    color,
-    id: generate(),
-    delay: 0.6 * idx,
-  }));
-
   return (
     <Container fullscreen={fullscreen}>
-      {dominoes.map(domino => (
-        <Domino key={domino.id} {...domino} />
-      ))}
+      <Spiner>
+        <Heart theme={theme} />
+        <Heart theme={theme} />
+        <Heart theme={theme} />
+      </Spiner>
     </Container>
   );
 };
@@ -107,8 +89,9 @@ Loader.defaultProps = {
 };
 
 Loader.propTypes = {
+  theme: PropTypes.object.isRequired,
   loading: PropTypes.bool,
   fullscreen: PropTypes.bool,
 };
 
-export default Loader;
+export default withTheme()(Loader);

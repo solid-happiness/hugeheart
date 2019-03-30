@@ -5,13 +5,13 @@ import sleep from '../../helpers/sleep';
 import Loader from '../Loader';
 import Layout from '../Layout';
 import Header from './Header';
-import Events from './Events';
+import Cards from './Cards';
 import MainSection from '../MainSection';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 `;
 
 const loadEvents = async (setEvents) => {
@@ -30,6 +30,7 @@ const loadEvents = async (setEvents) => {
       img: '',
       slug: 'vystovka',
       shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
     },
     {
       id: 2,
@@ -37,6 +38,68 @@ const loadEvents = async (setEvents) => {
       img: '',
       slug: 'vystovka',
       shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+    {
+      id: 3,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+    {
+      id: 4,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+  ]);
+};
+
+const loadPartners = async (setEvents) => {
+  /**
+   * TODO: loadCompanies
+   * const { companies } = await (await fetch('/api/companies/')).json();
+   */
+
+  // Для красоты отображения loader-ов увеличиваем задержку на 1 секунду.
+  await sleep(1000);
+
+  setEvents([
+    {
+      id: 1,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+    {
+      id: 2,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+    {
+      id: 3,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
+    },
+    {
+      id: 4,
+      name: 'Выставка',
+      img: '',
+      slug: 'vystovka',
+      shortDescription: 'hey hey hey',
+      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
     },
   ]);
 };
@@ -51,6 +114,11 @@ const Home = () => {
     loadEvents(setEvents);
   }, []);
 
+  const [partners, setPartners] = React.useState([]);
+  React.useEffect(() => {
+    loadPartners(setPartners);
+  }, []);
+
   const loading = events.length === 0;
 
   return (
@@ -59,7 +127,8 @@ const Home = () => {
       <Container>
         <Header />
         <MainSection>
-          <Events events={events} />
+          <Cards cards={events} title="События" />
+          <Cards cards={partners} title="Партнёры" />
         </MainSection>
       </Container>
     </Layout>

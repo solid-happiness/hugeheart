@@ -6,10 +6,19 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from 'react-router-dom';
-import { faHamburger } from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '../../logo.svg';
+
+const HeaderText = styled(({ main, ...rest }) => <Typography {...rest} />)`
+  && {
+    font-family: "BloggerSansBold";
+    color: ${({ main }) => (main ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)')} ;
+    font-weight: 500;
+  }
+`;
 
 const Container = styled.header`
     display: flex;
@@ -19,9 +28,12 @@ const Container = styled.header`
     top: 0;
     left: 0;
     width: 100%;
-    height: 64px;
+    height: 72px;
     background: rgb(250, 250, 250);
     z-index: 5;
+    background-color: white;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    box-shadow: 0 1px 1px rgba(27,31,35,.1)!important;
 `;
 
 const HomePageLink = styled(Link)`
@@ -33,7 +45,7 @@ const Logo = styled.aside`
     align-items: center;
 `;
 
-const LogoIcon = styled.div`
+const LogoIcon = styled(FontAwesomeIcon)`
     && {
         margin-right: 5px;
         background-image: url(${logo});
@@ -70,23 +82,38 @@ const SiteHeader = ({ theme }) => {
       <HomePageLink to="/">
         <Logo>
           <LogoIcon
-            icon={faHamburger}
+            icon={faHeart}
             color={theme.palette.primary.main}
           />
-          <Typography
+          <HeaderText
             variant="h6"
-            inline
+            color="primary"
+            main
           >
-            МГТУ им. Н.Э. Баумана
-          </Typography>
+            Доброе сердце
+          </HeaderText>
         </Logo>
       </HomePageLink>
       <Menu>
-        <Button onClick={() => handleClick(setAlertMessage)}>
-          Доставка
+        <Button
+          onClick={() => handleClick(setAlertMessage)}
+        >
+          <HeaderText
+            variant="body1"
+            color="textSecondary"
+            inline
+          >
+            О нас
+          </HeaderText>
         </Button>
         <Button onClick={() => handleClick(setAlertMessage)}>
-          Калькулятор калорий
+          <HeaderText
+            variant="body1"
+            color="textSecondary"
+            inline
+          >
+            Войти
+          </HeaderText>
         </Button>
       </Menu>
       <Dialog open={showAlert}>
