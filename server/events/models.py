@@ -4,25 +4,26 @@ from django.db import models
 class Event(models.Model):
     name = models.CharField(
         'Название мероприятия',
-        max_length = 128,
+        max_length=128,
     )
     slug = models.CharField(
         'Короткое название, метка',
-        max_length = 128,
+        max_length=128,
+        unique=True
     )
     short_description = models.TextField(
         'Краткое описание мероприятия',
-        max_length = 256,
+        max_length=256,
     )
     description = models.TextField(
         'Развернутое описание мероприятия',
-        max_length = 1024,
-        default = '',
-        blank = True,
+        max_length=1024,
+        default='',
+        blank=True,
     )
     partners = models.ManyToManyField(
         'main.Partner',
-        verbose_name = 'Партнеры мероприятия',
+        verbose_name='Партнеры мероприятия',
     )
     date = models.DateField(
         'Дата проведения мероприятия',
@@ -35,14 +36,28 @@ class Event(models.Model):
     )
     responsible = models.ForeignKey(
         'main.UserProfile',
-        verbose_name = 'Ответственный за мероприятие',
-        on_delete = models.SET_NULL,
-        null = True,
+        verbose_name='Ответственный за мероприятие',
+        on_delete=models.SET_NULL,
+        null=True,
     )
     photo = models.ImageField(
         'Фото или лого мероприятия',
-        upload_to = 'events',
-        null = True,
-        blank = True,
+        upload_to='events',
+        null=True,
+        blank=True,
     )
 
+    def to_dict(self):
+        """
+        Метод для удобства возврата экземпляра модели и последующей конвертации в json.
+        """
+        return {
+            "id": self.id,
+            "name": self.name,
+            "img": str(self.photo) and self.photo.url,
+            "slug": self.slug,
+            "description": self.description,
+            "partners": [partner.to_dict() for partner in self.partners.all()],
+            "date": self.date,
+            "shortDescription": self.short_description
+        }
