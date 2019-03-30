@@ -85,20 +85,6 @@ module.exports = require('./webpack.base')({
       inject: true,
     }),
 
-    // Put it in the end to capture all the HtmlWebpackPlugin's
-    // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
-    new OfflinePlugin({
-      relativePaths: false,
-      publicPath: '/',
-      appShell: '/',
-      excludes: ['.htaccess'],
-      caches: {
-        main: [':rest:'],
-        additional: ['*.chunk.js'],
-      },
-      safeToUseOptiosnalCaches: true,
-    }),
-
     new CompressionPlugin({
       algorithm: 'gzip',
       test: /\.js$|\.css$|\.html$/,
