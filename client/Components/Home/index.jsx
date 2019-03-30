@@ -15,48 +15,12 @@ const Container = styled.div`
 `;
 
 const loadEvents = async (setEvents) => {
-  /**
-   * TODO: loadCompanies
-   * const { companies } = await (await fetch('/api/companies/')).json();
-   */
+  const { events } = await (await fetch('/api/events/')).json();
 
   // Для красоты отображения loader-ов увеличиваем задержку на 1 секунду.
   await sleep(1000);
 
-  setEvents([
-    {
-      id: 1,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 2,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 3,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-    {
-      id: 4,
-      name: 'Выставка',
-      img: '',
-      slug: 'vystovka',
-      shortDescription: 'hey hey hey',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus, vero aliquam eveniet corporis ex perspiciatis earum, cumque unde molestiae laboriosam recusandae tempore doloremque provident labore hic pariatur modi, expedita autem?',
-    },
-  ]);
+  setEvents(events);
 };
 
 const loadPartners = async (setEvents) => {
