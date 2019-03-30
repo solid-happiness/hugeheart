@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 USER_ROLES = [
-    ('1', 'Волонтер'),
-    ('2', 'Организатор'),
-    ('3', 'Администратор'),
+    ('volunteer', 'Волонтер'),
+    ('arganizer', 'Организатор'),
+    ('admin', 'Администратор'),
 ]
 
 PARTNER_ROLE = [
@@ -38,7 +38,7 @@ class UserProfile(User):
     role = models.CharField(
         'Статус пользователя',
         choices=USER_ROLES,
-        max_length=1,
+        max_length=9,
     )
     photo = models.ImageField(
         'Фотография',
@@ -52,7 +52,9 @@ class UserProfile(User):
             "id": self.id,
             "name": self.username,
             "img": str(self.photo) and self.photo.url,
-            "shortDescription": self.short_description
+            "shortDescription": self.short_description,
+            "role": self.role,
+            "verboseRole": self.get_role_display(),
         }
 
 
@@ -132,6 +134,11 @@ class Partner(models.Model):
         upload_to='partners',
         null=True,
         blank=True,
+    )
+    tags = models.CharField(
+        'Тэги',
+        max_length = 128,
+        default = '',
     )
 
     def to_dict(self):
