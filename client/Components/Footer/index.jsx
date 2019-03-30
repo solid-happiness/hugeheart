@@ -12,13 +12,13 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 
 const Container = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    color: #fff;
-    height: 150px;
-    margin-top: 50px;
-    background-color: ${({ theme }) => theme.palette.secondary.main};
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: #fff;
+  height: 150px;
+  margin-top: 50px;
+  background-color: ${({ theme }) => theme.palette.secondary.main};
 `;
 
 const Description = styled(Typography)`
@@ -28,14 +28,20 @@ const Description = styled(Typography)`
     padding: 0 15px;
     text-align: center;
   }
+
+  @media screen and (max-width: 720px) {
+    && {
+      display: none;
+    }
+  }
 `;
 
 const IconWrapper = styled(FontAwesomeIcon)`
-    && {
-        display: block;
-        width: 16px;
-        height: 16px;
-    }
+  && {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const ProfileLink = styled(Link)`
@@ -45,6 +51,12 @@ const ProfileLink = styled(Link)`
     font-family: "BloggerSansBold";
     color: white;
     font-size: 1rem;
+  }
+
+  @media screen and (max-width: 720px) {
+    && {
+      min-width: auto;
+    }
   }
 `;
 

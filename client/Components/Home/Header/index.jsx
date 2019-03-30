@@ -13,6 +13,7 @@ const Container = styled.section`
   
   @media screen and (max-width: 720px) {
     width: 90%;
+    height: 150px;
   }
 `;
 
