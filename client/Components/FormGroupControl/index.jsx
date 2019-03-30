@@ -86,7 +86,7 @@ FormGroupControl.propTypes = {
   ]),
   disabled: PropTypes.bool,
   required: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
   render: PropTypes.func,
   alignItems: PropTypes.string,
   showErrors: PropTypes.bool,

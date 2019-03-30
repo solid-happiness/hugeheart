@@ -8,20 +8,13 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import Header from '../Header';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 64px;
-`;
-
-const Header = styled(Typography)`
-  && {
-    font-family: "BloggerSansBold";
-    font-weight: 500;
-    font-size: 2.5rem;
-  }
 `;
 
 const Container = styled.div`

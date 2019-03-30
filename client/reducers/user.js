@@ -4,6 +4,7 @@ const initialState = {
   name: '',
   img: '',
   shortDescription: '',
+  role: '',
 };
 
 const user = (state = initialState, action) => {

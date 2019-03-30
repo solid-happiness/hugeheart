@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
 import Loader from '../Loader';
+import AddUserProfile from './AddUserProfile';
 
 const Container = styled.div`
     position: relative;
@@ -42,21 +43,21 @@ const UserProfile = () => {
   const [room] = React.useReducer(
     rooms,
     {
-      loading: true,
+      loading: false,
       menu: [],
     },
   );
 
-
   React.useEffect(() => {
-    document.title = room.name || 'Страница столовой';
-  }, [room]);
+    document.title = 'Личный кабинет';
+  }, []);
 
   return (
     <Layout>
       <MainSection>
         <Container>
           <Loader fullscreen loading={room.loading} />
+          <AddUserProfile />
         </Container>
       </MainSection>
     </Layout>

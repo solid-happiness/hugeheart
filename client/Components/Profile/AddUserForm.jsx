@@ -3,24 +3,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import MenuItem from '@material-ui/core/MenuItem';
+import SelectMaterialUI from '@material-ui/core/Select';
 import FormGroupControl from '../FormGroupControl';
+import FileUploader from '../FileUploader';
+import Loader from '../Loader';
+
+const Select = styled(SelectMaterialUI)`
+    && {
+        width: 100%;
+    }
+`;
 
 const Wrapper = styled(Grid)`
     position: relative;
-`;
-
-const Overlay = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: ${({ visible }) => (visible ? 'flex' : 'none')};
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.1);
-    z-index: 3;
 `;
 
 class AddUserForm extends React.Component {
@@ -40,23 +36,12 @@ class AddUserForm extends React.Component {
       errors,
       isValid,
       isSubmitting,
+      setFieldValue,
     } = this.props;
 
     return (
       <Wrapper container spacing={32}>
-        <Overlay visible={isSubmitting}>
-          <CircularProgress size={50} />
-        </Overlay>
-        <FormGroupControl
-          label="Фамилия"
-          name="lastName"
-          required
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          value={values.lastName}
-          error={errors.lastName}
-          touched={touched.lastName}
-        />
+        <Loader loading={isSubmitting} min />
         <FormGroupControl
           label="Имя"
           name="firstName"
@@ -66,6 +51,16 @@ class AddUserForm extends React.Component {
           value={values.firstName}
           error={errors.firstName}
           touched={touched.firstName}
+        />
+        <FormGroupControl
+          label="Фамилия"
+          name="lastName"
+          required
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.lastName}
+          error={errors.lastName}
+          touched={touched.lastName}
         />
         <FormGroupControl
           label="Логин"
@@ -78,6 +73,16 @@ class AddUserForm extends React.Component {
           touched={touched.username}
         />
         <FormGroupControl
+          label="Email"
+          name="email"
+          required
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.email}
+          error={errors.email}
+          touched={touched.email}
+        />
+        <FormGroupControl
           label="Пароль"
           name="password"
           required
@@ -86,6 +91,76 @@ class AddUserForm extends React.Component {
           value={values.password}
           error={errors.password}
           touched={touched.password}
+        />
+        <FormGroupControl
+          label="Краткое описание"
+          name="shortDescription"
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.shortDescription}
+          error={errors.shortDescription}
+          touched={touched.shortDescription}
+        />
+        <FormGroupControl
+          label="Номер телефона"
+          name="phoneNumber"
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.phoneNumber}
+          error={errors.phoneNumber}
+          touched={touched.phoneNumber}
+        />
+        <FormGroupControl
+          label="Роль"
+          name="role"
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.role}
+          error={errors.role}
+          touched={touched.role}
+          required
+          render={props => (
+            <Select
+              {...props}
+              value={values.role}
+            >
+              {[
+                {
+                  name: 'volunteer',
+                  verboseName: 'Волонтер',
+                },
+                {
+                  name: 'organizer',
+                  verboseName: 'Организатор',
+                },
+                {
+                  name: 'admin',
+                  verboseName: 'Администратор',
+                },
+              ].map(avaliableRole => (
+                <MenuItem value={String(avaliableRole.name)} key={avaliableRole.name}>
+                  {avaliableRole.verboseName}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+        <FormGroupControl
+          label="Фотография"
+          name="photo"
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          value={values.photo}
+          error={errors.photo}
+          touched={touched.photo}
+          render={() => (
+            <FileUploader
+              files={values.photo}
+              setFieldValue={setFieldValue}
+              name="photo"
+              onBlur={handleBlur}
+            />
+          )}
         />
         <Grid container justify="center" item xs={12}>
           <Button
@@ -127,6 +202,7 @@ AddUserForm.propTypes = {
   }).isRequired,
   isValid: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
 };
 
 export default AddUserForm;
