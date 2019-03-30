@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 
 from .models import Partner, UserProfile
+from events import models
+from django.contrib.auth import authenticate
 
 
 def get_partners(request):
@@ -12,6 +14,8 @@ def get_partners(request):
     Доступна по /api/partners
     """
     partners = Partner.objects.all()
+    volunteers = [volunteer.to_dict()
+                  for volunteer in UserProfile.objects.all() if volunteer.role == '1']
     return JsonResponse({
         'partners': [partner.to_dict() for partner in partners],
     })
@@ -43,10 +47,9 @@ def get_volunteers(request):
 
 def get_user_profile(request):
     if request.user.is_authenticated:
-        return JsonResponse({'auth': 'true', **request.user.userprofile.to_dict()})
+        return JsonResponse({'auth': True, **request.user.userprofile.to_dict()})
     else:
-        return JsonResponse({'auth': 'false'})
-
+        return JsonResponse({'auth': False})
 
 
 def login_view(request):
@@ -56,7 +59,7 @@ def login_view(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return JsonResponse({'auth': 'true', **user.userprofile.to_dict()})
+        return JsonResponse({'auth': True, **user.userprofile.to_dict()})
 
     else:
-        return JsonResponse({'auth': 'false'})
+        return JsonResponse({'auth': False})
