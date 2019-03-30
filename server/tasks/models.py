@@ -79,10 +79,10 @@ class Task(models.Model):
         return {
             "title": self.title,
             "description": self.description,
-            "author": self.author,
+            "author": self.author.get_full_name() or self.author.username or '',
             "status": self.status,
             "event": self.event.name,
-            "performers": [performer.get_full_name() for performer in self.task_performers.all()],
+            "performers": [performer.get_full_name() or performer.username for performer in self.task_performers.all()],
             "need_performers": self.need_performers,
             "create_date": self.create_date,
             "deadline": self.deadline,
