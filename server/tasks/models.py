@@ -75,12 +75,28 @@ class Task(models.Model):
         max_length = 128,
     )
 
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "description": self.description,
+            "author": self.author,
+            "status": self.status,
+            "event": self.event.name,
+            "performers": [performer.get_full_name() for performer in self.task_performers.all()],
+            "need_performers": self.need_performers,
+            "create_date": self.create_date,
+            "deadline": self.deadline,
+            "priority": self.priority,
+            "tags": [tag for tag in str(self.tags).split(';')],
+        }
+
 
 class TaskComment(models.Model):
     author = models.ForeignKey(
         'main.UserProfile',
         verbose_name = 'Автор комментария',
         on_delete = models.SET_NULL,
+        null = True,
     )
     text = models.TextField(
         'Текст комментария',

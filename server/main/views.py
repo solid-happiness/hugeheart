@@ -41,6 +41,14 @@ def get_volunteers(request):
     })
 
 
+def get_user_profile(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'auth': 'true', **request.user.userprofile.to_dict()})
+    else:
+        return JsonResponse({'auth': 'false'})
+
+
+
 def login_view(request):
     params = json.loads(request.body.decode('utf8'))
     username = params.get('username')
