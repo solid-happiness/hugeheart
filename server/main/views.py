@@ -15,8 +15,6 @@ def get_partners(request):
     Доступна по /api/partners
     """
     partners = Partner.objects.all()
-    volunteers = [volunteer.to_dict()
-                  for volunteer in UserProfile.objects.all() if volunteer.role == '1']
     return JsonResponse({
         'partners': [partner.to_dict() for partner in partners],
     })
@@ -69,24 +67,21 @@ def login_view(request):
 def create_user_profile(request):
     try:
         user = UserProfile.objects.create_user(
-            username=request.POST.get('username'), 
-            email=request.POST.get('email'), 
-            password=validate_password(request.POST.get('password')), 
-            first_name=request.POST.get('firstName') or '', 
+            username=request.POST.get('username'),
+            email=request.POST.get('email'),
+            password=validate_password(request.POST.get('password')),
+            first_name=request.POST.get('firstName') or '',
             last_name=request.POST.get('lastName') or '',
-            short_description = request.POST.get('shortDescription') or '',
-            phone_number = request.POST.get('phoneNumber') or '',
-            role = request.POST.get('role'),
+            short_description=request.POST.get('shortDescription') or '',
+            phone_number=request.POST.get('phoneNumber') or '',
+            role=request.POST.get('role'),
         )
         for _, file_content in request.FILES.items():
-            user.photo=file_content
+            user.photo = file_content
         user.save()
-        
+
         return JsonResponse({**user.to_dict()})
     except IntegrityError:
         return JsonResponse({'error': 'Пользователь с таким ником уже существует'})
     except ValidationError:
         return JsonResponse({'error': 'Слишком легкий пароль'})
-
-    
-
