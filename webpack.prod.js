@@ -1,9 +1,6 @@
 // Important modules this config uses
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
-const OfflinePlugin = require('offline-plugin');
-const { HashedModuleIdsPlugin } = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
@@ -91,30 +88,7 @@ module.exports = require('./webpack.base')({
       threshold: 10240,
       minRatio: 0.8,
     }),
-
-    new WebpackPwaManifest({
-      name: 'Огромное сердце',
-      short_name: 'Огромное сердце',
-      description: 'Организация добрых дел',
-      background_color: '#fafafa',
-      theme_color: '#b1624d',
-      inject: true,
-      ios: true,
-      icons: [
-        {
-          src: path.resolve('client/favicon.ico'),
-          sizes: [72, 96, 128, 144, 192, 384, 512],
-        },
-      ],
-    }),
-
-    new HashedModuleIdsPlugin({
-      hashFunction: 'sha256',
-      hashDigest: 'hex',
-      hashDigestLength: 20,
-    }),
   ],
-
   performance: {
     assetFilter: assetFilename => !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename),
   },
