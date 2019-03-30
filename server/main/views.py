@@ -7,8 +7,6 @@ from django.core.validators import ValidationError
 from django.db import IntegrityError
 
 from .models import Partner, UserProfile
-from events import models
-from django.contrib.auth import authenticate
 
 
 def get_partners(request):
@@ -27,7 +25,7 @@ def get_partners(request):
 def get_partner(request, partner_name):
     """
     View, которая возвращает JSON с информацией о партнере partner_name.
-    Доступна по /api/events/<partner_name>
+    Доступна по /api/partners/<partner_name>
     """
     try:
         partner = Partner.objects.get(slug=partner_name)

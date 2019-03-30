@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 
 USER_ROLES = [
     ('volunteer', 'Волонтер'),
-    ('arganizer', 'Организатор'),
+    ('organizer', 'Организатор'),
     ('admin', 'Администратор'),
 ]
 
@@ -56,6 +56,13 @@ class UserProfile(User):
             "role": self.role,
             "verboseRole": self.get_role_display(),
         }
+
+    def __str__(self):
+        return str(self.username)
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class Partner(models.Model):
@@ -135,10 +142,11 @@ class Partner(models.Model):
         null=True,
         blank=True,
     )
-    tags = models.CharField(
-        'Тэги',
-        max_length = 128,
-        default = '',
+    tags = models.ManyToManyField(
+        'tasks.Tag',
+        related_name='partner',
+        verbose_name='Тэги',
+        blank=True,
     )
 
     def to_dict(self):
