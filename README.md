@@ -16,7 +16,7 @@ TODO: здесь нужно добавить описание.
 
 #### 2. Создать и запустить виртуальное окружение
 ```
-$ python -m venv server/venv
+$ python3 -m venv server/venv
 $ source server/venv/bin/activate
 ```
 
@@ -35,7 +35,7 @@ $ sudo -u postgres psql
 И выполнить следующие команды:
 ```postgresql
 create user hugeheart with password 'qwerty';
-create database hugeheart_db owner admin;
+create database hugeheart_db owner hugeheart;
 ```
 
 #### 5. Заполнить базу данных
