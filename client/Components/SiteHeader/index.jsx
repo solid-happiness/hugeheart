@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core';
@@ -144,6 +144,12 @@ const AboutUsButton = styled(Button)`
   }
 `;
 
+const UserProfileLink = styled(Link)`
+  && {
+    text-decoration: none;
+  }
+`;
+
 const handleClick = setAlertMessage => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время');
 const handleAuthClick = async ({
   event,
@@ -216,12 +222,14 @@ const SiteHeader = ({ theme, dispatchUserData, user }) => {
       <Menu>
         {user.auth
           ? (
-            <Button
-              variant="outlined"
-              color="primary"
-            >
-              Личный кабинет
-            </Button>
+            <UserProfileLink to="/profile">
+              <Button
+                variant="outlined"
+                color="primary"
+              >
+                Личный кабинет
+              </Button>
+            </UserProfileLink>
           )
           : (
             <>

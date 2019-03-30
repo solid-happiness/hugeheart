@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 
-import { setUserData } from './actions/user';
 import Home from './Components/Home';
-import DiningRoom from './Components/DiningRoom';
+import Profile from './Components/Profile';
 
 import BloggerSansBoldEot from './fonts/BloggerSans-Bold.eot';
 import BloggerSansBoldTtf from './fonts/BloggerSans-Bold.ttf';
@@ -59,29 +56,9 @@ const theme = createMuiTheme({
   },
 });
 
-const App = ({
-  dispatchUserData,
-}) => {
+const App = () => {
   React.useEffect(() => {
     document.title = 'Огромное сердце';
-  }, []);
-
-  React.useEffect(() => {
-    const loadUserData = async () => {
-      const userData = await (await fetch(
-        '/api/user-profile/',
-        {
-          method: 'GET',
-          credentials: 'same-origin',
-        },
-      )).json();
-
-      if (userData.auth) {
-        dispatchUserData(userData);
-      }
-    };
-
-    loadUserData();
   }, []);
 
   return (
@@ -91,20 +68,11 @@ const App = ({
       <MuiThemeProvider theme={theme}>
         <Router>
           <Route path="/" component={Home} exact />
-          <Route path="/:diningRoomSlug/" component={DiningRoom} />
+          <Route path="/profile/" component={Profile} />
         </Router>
       </MuiThemeProvider>
     </>
   );
 };
 
-App.propTypes = {
-  dispatchUserData: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = ({ user }) => ({ user });
-const mapDispatchToProps = dispatch => ({
-  dispatchUserData: data => dispatch(setUserData(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
