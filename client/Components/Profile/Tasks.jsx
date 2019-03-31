@@ -137,13 +137,13 @@ const getFilteredTasks = (
   selectedTags,
   eventSlug,
 ) => {
-  if (!selectedTags.length) {
-    return tasks;
-  }
-
   const eventFilteredTasks = eventSlug
     ? tasks.filter(({ tags }) => tags.includes(eventSlug))
     : tasks;
+
+  if (!selectedTags.length) {
+    return eventFilteredTasks;
+  }
 
   const selectedTagsSet = new Set(selectedTags);
   return eventFilteredTasks.filter(({ tags: taskTags }) => taskTags.filter(
@@ -190,6 +190,11 @@ const Tasks = ({
                 )}
                 onChange={event => setSelectedEvent(event.target.value)}
               >
+                <MenuItem
+                  value=""
+                >
+                  Все мероприятия
+                </MenuItem>
                 {events.map(({ id, name, slug }) => (
                   <MenuItem
                     key={id}

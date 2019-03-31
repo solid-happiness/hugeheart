@@ -95,7 +95,7 @@ class Task(models.Model):
             "createDate": self.create_date,
             "deadline": self.deadline,
             "priority": self.priority,
-            "tags": [str(tag) for tag in self.tags.all()],
+            "tags": [str(tag) for tag in self.tags.all()] + [self.event.slug],
         }
 
     def __str__(self):
