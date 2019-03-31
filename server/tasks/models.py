@@ -29,6 +29,8 @@ class Task(models.Model):
     description = models.TextField(
         'Подробное описание задачи',
         max_length=1024,
+        blank=True,
+        null=True,
     )
     event = models.ForeignKey(
         'events.Event',
@@ -93,7 +95,7 @@ class Task(models.Model):
             "createDate": self.create_date,
             "deadline": self.deadline,
             "priority": self.priority,
-            "tags": [str(tag) for tag in self.tags.all()] + [self.event.slug],
+            "tags": [str(tag) for tag in self.tags.all()],
         }
 
     def __str__(self):

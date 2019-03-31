@@ -14,9 +14,9 @@ PARTNER_ROLE = [
 ]
 
 COMMUNICATION_METHODS = [
-    ('1', 'Email'),
-    ('2', 'Телефон'),
-    ('3', 'Личная встреча'),
+    ('email', 'Email'),
+    ('phone', 'Телефон'),
+    ('meet', 'Личная встреча'),
 ]
 
 
@@ -34,7 +34,6 @@ class UserProfile(User):
         max_length=17,
         blank=True
     )
-
     role = models.CharField(
         'Статус пользователя',
         choices=USER_ROLES,
@@ -133,8 +132,8 @@ class Partner(models.Model):
     communication_method = models.CharField(
         'Предпочтительный способ связи',
         choices=COMMUNICATION_METHODS,
-        max_length=1,
-        default='1',
+        max_length=5,
+        default='email',
     )
     photo = models.ImageField(
         'Фото или лого партнера',
@@ -153,6 +152,12 @@ class Partner(models.Model):
         p, a = self.contact_email, self.contact_phone_number
         if self.communication_method == '2':
             p, a = a, p
+
+        try:
+            interaction_histories = self.interaction_histories.all()
+        except InteractionHistory.DoesNotExist:
+            interaction_histories = []
+
         return {
             "id": self.id,
             "name": self.name,
@@ -162,6 +167,8 @@ class Partner(models.Model):
             "description": self.description,
             "communicationPrefer": p,
             "communicationAlternative": a,
+            "interactionHistory": [history.to_dict() for history in interaction_histories],
+            "tags": [str(tag) for tag in self.tags.all()],
         }
 
     def __str__(self):
@@ -176,6 +183,7 @@ class InteractionHistory(models.Model):
     partner = models.ForeignKey(
         Partner,
         verbose_name='Партнер',
+        related_name='interaction_histories',
         on_delete=models.CASCADE,
     )
     interaction_link = models.CharField(
@@ -195,3 +203,19 @@ class InteractionHistory(models.Model):
         'Результат взаимодействия',
         max_length=256,
     )
+
+    def to_dict(self):
+        return {
+            'interactionLink': self.interaction_link,
+            'interactionLinkVerbose': self.get_interaction_link_display(),
+            'dateTime': self.date_time,
+            'about': self.about,
+            'result': self.result,
+        }
+
+    def __str__(self):
+        return str(self.partner)
+
+    class Meta:
+        verbose_name = 'История взаимодействия с партнером'
+        verbose_name_plural = 'Истории взаимодействий с партнером'

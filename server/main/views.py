@@ -7,7 +7,7 @@ from django.core.validators import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 
-from .models import Partner, UserProfile
+from .models import Partner, UserProfile, InteractionHistory
 
 
 def get_partners(request):
@@ -64,7 +64,7 @@ def login_view(request):
     else:
         return JsonResponse({'auth': False})
 
-    
+
 def log_out_view(request):
     logout(request)
     return JsonResponse({'auth': False})
@@ -92,3 +92,17 @@ def create_user_profile(request):
         return JsonResponse({'error': 'Пользователь с таким ником уже существует'})
     except ValidationError:
         return JsonResponse({'error': 'Слишком легкий пароль'})
+
+
+@login_required
+def create_interaction_history(request):
+    params = json.loads(request.body.decode('utf8'))
+    slug = params.get('partner')
+    new_history = InteractionHistory.objects.create(
+        partner=Partner.objects.get(slug=slug),
+        interaction_link=params.get('interactionLink'),
+        date_time=params.get('dateTime'),
+        about=params.get('about'),
+        result=params.get('result'),
+    )
+    return get_partner(request, slug)
