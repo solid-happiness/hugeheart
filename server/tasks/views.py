@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from .models import Task, Tag
+from .models import Task, Tag, TaskComment
 from events.models import Event
 from main.models import UserProfile
 
@@ -97,3 +97,38 @@ def create_task(request):
         task_tags.append(Tag.objects.get(tag='Нужна помощь'))
 
     task.tags.set(task_tags)
+
+
+def change_task_status(request):
+    params = json.loads(request.body.decode('utf8'))
+
+    user = request.user.userprofile
+    task = Task.objects.get(id=params.get('id'))
+    new_status = params.get('newStatus')
+
+    if new_status == 'check' and not task.status == 'check':
+        description = f'Задача: {task.title}\nОписание задачи: {task.description} \nИсполнитель: {user.get_full_name() or user.username}'
+        
+        author = UserProfile.objects.get(username='bot')
+        new_task = Task.objects.create(
+            level=task.author.role,
+            title='Проверить выполнение задачи',
+            description=description,
+            event=task.event,
+            author=author,
+            deadline="2099-03-30T19:11:28Z",
+            priority='medium',
+        )
+        new_task.task_performers.set([task.author,])
+        new_task.tags.set([Tag.objects.get(tag='Проверка'),])
+        task.status='check'
+        task.save()
+    else:
+        task.status=new_status
+        task.save()
+    TaskComment.objects.create(
+            author=user,
+            text=f'Статус задачи изменен. Новый статус: {task.get_status_display()}\nАвтор:{user.get_full_name() or user.username}',
+            task=task,
+        )
+    return JsonResponse({**task.to_dict()})
