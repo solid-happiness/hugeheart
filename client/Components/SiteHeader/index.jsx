@@ -9,8 +9,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import { withTheme } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loader from '../Loader';
@@ -147,7 +148,14 @@ const AboutUsButton = styled(Button)`
 const UserProfileLink = styled(Link)`
   && {
     text-decoration: none;
+    margin-right: 15px;
   }
+`;
+
+const AuthPannel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const handleClick = setAlertMessage => setAlertMessage('Данный функционал пока что не доступен, но будет реализован в ближайшее время');
@@ -222,14 +230,23 @@ const SiteHeader = ({ theme, dispatchUserData, user }) => {
       <Menu>
         {user.auth
           ? (
-            <UserProfileLink to="/profile">
-              <Button
-                variant="outlined"
-                color="primary"
+            <AuthPannel>
+              <UserProfileLink to="/profile">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                >
+                  Личный кабинет
+                </Button>
+              </UserProfileLink>
+              <IconButton onClick={async () => {
+                const userData = await (await fetch('/api/logout/')).json();
+                dispatchUserData(userData);
+              }}
               >
-                Личный кабинет
-              </Button>
-            </UserProfileLink>
+                <FontAwesomeIcon icon={faSignOutAlt} />
+              </IconButton>
+            </AuthPannel>
           )
           : (
             <>
