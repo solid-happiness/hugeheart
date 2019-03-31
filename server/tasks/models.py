@@ -36,7 +36,9 @@ class Task(models.Model):
         'events.Event',
         verbose_name='Для мероприятия',
         related_name='tasks',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     author = models.ForeignKey(
         'main.UserProfile',
@@ -88,8 +90,8 @@ class Task(models.Model):
             "author": self.author.get_full_name() or self.author.username or '',
             "status": self.status,
             "statusVerbose": self.get_status_display(),
-            "event": self.event.slug,
-            "eventTitle": self.event.name,
+            "event": getattr(self.event, 'slug', ''),
+            "eventTitle": getattr(self.event, 'name', ''),
             "performers": [performer.get_full_name() or performer.username for performer in self.task_performers.all()],
             "needPerformers": self.need_performers,
             "createDate": self.create_date,

@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 
 from .models import Partner, UserProfile, InteractionHistory
+from tasks.models import Task
 
 
 def get_partners(request):
@@ -98,7 +99,7 @@ def create_user_profile(request):
 def create_interaction_history(request):
     params = json.loads(request.body.decode('utf8'))
     slug = params.get('partner')
-    new_history = InteractionHistory.objects.create(
+    InteractionHistory.objects.create(
         partner=Partner.objects.get(slug=slug),
         interaction_link=params.get('interactionLink'),
         date_time=params.get('dateTime'),
@@ -106,3 +107,31 @@ def create_interaction_history(request):
         result=params.get('result'),
     )
     return get_partner(request, slug)
+
+
+def become_volunteer(request):
+    params = json.loads(request.body.decode('utf8'))
+    description = f'Имя: {params.get("name")}\nEmail: {params.get("email")}\nО себе: ${params.get("description")}'
+    Task.objects.create(
+        level='admin',
+        title='Заявка на волонтерство',
+        description=description,
+        author=UserProfile.objects.get_or_create(username='bot')[0],
+        deadline="2099-03-30T19:11:28Z",
+        priority='low',
+    )
+    return JsonResponse({})
+
+
+def become_partner(request):
+    params = json.loads(request.body.decode('utf8'))
+    description = f'{params.get("name")}\nEmail: {params.get("email")}\nО себе: ${params.get("description")}'
+    Task.objects.create(
+        level='admin',
+        title='Заявка на партнерство',
+        description=description,
+        author=UserProfile.objects.get_or_create(username='bot')[0],
+        deadline="2099-03-30T19:11:28Z",
+        priority='low',
+    )
+    return JsonResponse({})
