@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from .models import Task
+from .models import Task, Tag
 from events.models import Event
+from main.models import UserProfile
 
 
 @login_required
@@ -50,3 +51,30 @@ def search(request):
         'tasks': [task.to_dict() for task in tasks],
         'query': query,
     })
+
+
+def create_task(request):
+    params = json.loads(request.body.decode('utf8'))
+
+    event = Event.objects.get(slug=params.get('event'))
+    author = UserProfile.objects.get(user=request.user)
+    task = Task.objects.create(
+        level=params.get('level'), 
+        title=params.get('title'),  
+        description=params.get('description'), 
+        event=event,
+        author=author,
+        need_performers = params.get('needPerformers'),
+        deadline = params.get('deadline'),
+        priority = params.get('priority'),
+    )
+    performers = UserProfile.objects.filter(username__in=params.get('performers'))
+    task.task_performers.set(performers)
+    task_tags = []
+    for tag in params.get('tags'):
+        try:
+            t = Tag.objects.get(tag=tag)
+        except Tag.DoesNotExist:
+            t = Tag.objects.create(tag=tag)
+        task_tags.append(t)
+    task.tags.set(task_tags)

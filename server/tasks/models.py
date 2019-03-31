@@ -53,6 +53,7 @@ class Task(models.Model):
         'main.UserProfile',
         related_name='task_performers',
         verbose_name='Исполнители задачи',
+        blank=True,
     )
     need_performers = models.BooleanField(
         'Задача открыта для исполнителей',
