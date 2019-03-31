@@ -101,6 +101,10 @@ const TaskDescription = ({
   </>
 );
 
+TaskDescription.defaultProps = {
+  shortDescription: '',
+};
+
 TaskDescription.propTypes = {
   title: PropTypes.string.isRequired,
   statusVerbose: PropTypes.string.isRequired,
@@ -110,7 +114,7 @@ TaskDescription.propTypes = {
   tags: PropTypes.array.isRequired,
   eventTitle: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
-  shortDescription: PropTypes.string.isRequired,
+  shortDescription: PropTypes.string,
   description: PropTypes.string.isRequired,
 };
 
