@@ -84,13 +84,13 @@ class Task(models.Model):
             "description": self.description,
             "author": self.author.get_full_name() or self.author.username or '',
             "status": self.status,
-            "event": self.event.name,
+            "event": self.event.slug,
             "performers": [performer.get_full_name() or performer.username for performer in self.task_performers.all()],
             "needPerformers": self.need_performers,
             "createDate": self.create_date,
             "deadline": self.deadline,
             "priority": self.priority,
-            "tags": [str(tag) for tag in self.tags.all()],
+            "tags": [str(tag) for tag in self.tags.all()] + [self.event.slug],
         }
 
     def __str__(self):
