@@ -125,6 +125,7 @@ const TagButton = styled(({ selected, ...rest }) => <Button {...rest} />)`
     border-radius: 25px;
     padding: 0;
     text-transform: none;
+    max-height: 35px;
   }
 
   ${({ selected }) => (selected && `

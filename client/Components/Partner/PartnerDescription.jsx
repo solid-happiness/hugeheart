@@ -161,6 +161,7 @@ const styles = {
   media: {
     paddingTop: '56.25%',
     backgroundSize: 'contain',
+    margin: '0 35px',
   },
 };
 
