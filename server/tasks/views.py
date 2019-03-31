@@ -16,7 +16,7 @@ def get_tasks(request):
     View, которая возвращает JSON с информацией о задачах, автором которых является конкретный пользователь.
     Доступна по /api/tasks
     """
-    user = request.user.userprofile
+    user = UserProfile.objects.get(username=request.user.username)
 
     if user.role == 'admin':
         tasks = Task.objects.all()
@@ -83,7 +83,7 @@ def create_task(request):
 
     event = Event.objects.get(slug=params.get('event'))
     author = UserProfile.objects.get(
-        username=request.user.userprofile.username)
+        username=request.user.username)
     task = Task.objects.create(
         level=params.get('level'),
         title=params.get('title'),

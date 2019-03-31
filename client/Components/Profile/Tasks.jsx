@@ -20,7 +20,6 @@ import Search from '@material-ui/icons/Search';
 import Close from '@material-ui/icons/Close';
 import Header from '../Header';
 import SearchTasksBar from './SearchTasksBar';
-import { getDate } from '../../helpers';
 import AddTask from './AddTask';
 
 const Wrapper = styled.div`
@@ -33,10 +32,12 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
   grid-column-gap: 15px;
   grid-row-gap: 25px;
   margin: 25px;
+  width: 100%;
+  justify-content: center;
 `;
 
 const OutlinedInput = styled(OutlinedInputMaterialUi)`
@@ -98,6 +99,7 @@ const TaskLink = styled(Link)`
   && {
     color: #2c348e;
     text-decoration: none;
+    font-size: 1.3rem;
   }
 `;
 
@@ -123,6 +125,7 @@ const TagButton = styled(({ selected, ...rest }) => <Button {...rest} />)`
     border-radius: 25px;
     padding: 0;
     text-transform: none;
+    max-height: 35px;
   }
 
   ${({ selected }) => (selected && `
@@ -137,13 +140,13 @@ const getFilteredTasks = (
   selectedTags,
   eventSlug,
 ) => {
-  if (!selectedTags.length) {
-    return tasks;
-  }
-
   const eventFilteredTasks = eventSlug
     ? tasks.filter(({ tags }) => tags.includes(eventSlug))
     : tasks;
+
+  if (!selectedTags.length) {
+    return eventFilteredTasks;
+  }
 
   const selectedTagsSet = new Set(selectedTags);
   return eventFilteredTasks.filter(({ tags: taskTags }) => taskTags.filter(
@@ -190,6 +193,11 @@ const Tasks = ({
                 )}
                 onChange={event => setSelectedEvent(event.target.value)}
               >
+                <MenuItem
+                  value=""
+                >
+                  Все мероприятия
+                </MenuItem>
                 {events.map(({ id, name, slug }) => (
                   <MenuItem
                     key={id}
@@ -257,9 +265,6 @@ const Tasks = ({
           description,
           statusVerbose,
           author,
-          createDate,
-          deadline,
-          tags: taskTags,
           eventTitle,
         }) => (
           <Card key={id}>
@@ -284,15 +289,6 @@ const Tasks = ({
                 <Typography color="textSecondary">
                   {`Автор: ${author}`}
                 </Typography>
-                <Typography color="textSecondary">
-                  {`Дата создания: ${getDate(createDate)}`}
-                </Typography>
-                <Typography color="textSecondary">
-                  {`Дедлайн: ${getDate(deadline)}`}
-                </Typography>
-                <Typography color="textSecondary">
-                  {`Теги: ${taskTags.map(taskTag => `#${taskTag}`).join(', ')}`}
-                </Typography>
               </AdditionalInfo>
             </CardContent>
           </Card>
@@ -310,9 +306,6 @@ const Tasks = ({
 const styles = {
   title: {
     fontFamily: 'BloggerSansBold',
-  },
-  media: {
-    paddingTop: '56.25%',
   },
 };
 

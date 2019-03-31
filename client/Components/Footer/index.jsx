@@ -51,6 +51,8 @@ const ProfileLink = styled(Link)`
     font-family: "BloggerSansBold";
     color: white;
     font-size: 1rem;
+    z-index: 999;
+    position: relative;
   }
 
   @media screen and (max-width: 720px) {

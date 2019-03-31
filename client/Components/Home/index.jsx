@@ -8,6 +8,7 @@ import Header from './Header';
 import Cards from './Cards';
 import Volunteers from './Volunteers';
 import MainSection from '../MainSection';
+import Partners from './Partners';
 
 const Container = styled.div`
   display: flex;
@@ -66,7 +67,7 @@ const Home = () => {
         <Header />
         <MainSection>
           <Cards cards={events} title="События" />
-          <Cards cards={partners} title="Партнёры" />
+          <Partners partners={partners} />
           <Volunteers volunteers={volunteers} />
         </MainSection>
       </Container>

@@ -9,5 +9,7 @@ urlpatterns = [
     path('volunteers/', views.get_volunteers),
     path('user-profile/', views.get_user_profile),
     path('user-profile/create/', views.create_user_profile),
-    path('partners/create-interaction/', views.create_interaction_history),
+    path('create-interaction/', views.create_interaction_history),
+    path('become-partner/', views.become_partner),
+    path('become-volunteer/', views.become_volunteer),
 ]

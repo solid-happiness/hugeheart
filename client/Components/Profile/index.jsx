@@ -8,14 +8,15 @@ import Tasks from './Tasks';
 import sleep from '../../helpers/sleep';
 
 const Container = styled.div`
-    position: relative;
-    max-width: 1200px;
-    min-height: calc(100vh - 64px);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 15px;
+  position: relative;
+  max-width: 1200px;
+  min-height: calc(100vh - 64px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 15px;
+  width: 100%;
 `;
 
 const TASKS_ACTIONS = {

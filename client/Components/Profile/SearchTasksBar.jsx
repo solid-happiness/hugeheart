@@ -127,7 +127,7 @@ const handleTaskClick = (suggestion, history) => {
   );
 };
 
-const renderSuggestion = (suggestion, { query, isHighlighted }) => {
+const renderSuggestion = (history, suggestion, { query, isHighlighted }) => {
   const matches = match(suggestion.title, query);
   const parts = parse(suggestion.title, matches);
 
@@ -135,7 +135,7 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
     <MenuItem
       selected={isHighlighted}
       component="div"
-      onClick={() => handleTaskClick(suggestion)}
+      onClick={() => handleTaskClick(suggestion, history)}
       disableGutters
     >
       <div>
@@ -179,7 +179,7 @@ const SearchTasksBar = ({ history }) => {
       })}
       onSuggestionsClearRequested={() => setTasks([])}
       getSuggestionValue={getSuggestionValue}
-      renderSuggestion={renderSuggestion}
+      renderSuggestion={(...args) => renderSuggestion(history, ...args)}
       inputProps={{
         value: query,
         onChange: (event, { newValue }) => setQuery(newValue),
