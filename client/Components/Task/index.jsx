@@ -9,7 +9,7 @@ import Layout from '../Layout';
 import sleep from '../../helpers/sleep';
 import Loader from '../Loader';
 import MainSection from '../MainSection';
-import PartnerDescription from './PartnerDescription';
+import TaskDescription from './TaskDescription';
 
 const Container = styled.div`
     position: relative;
@@ -36,41 +36,41 @@ const BackIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const loadPartner = async ({ slug, setParnerInfo }) => {
-  const partner = await (await fetch(`/api/partners/${slug}/`)).json();
+const loadTask = async ({ id, setTask }) => {
+  const partner = await (await fetch(`/api/tasks/${id}/`)).json();
   await sleep(1000);
 
-  setParnerInfo(partner);
+  setTask(partner);
 };
 
 const Partner = ({ match }) => {
-  const [partner, setParnerInfo] = React.useState({});
+  const [task, setTask] = React.useState({});
 
   React.useEffect(() => {
-    loadPartner({
-      slug: match.params.partnerSlug,
-      setParnerInfo,
+    loadTask({
+      id: match.params.taskId,
+      setTask,
     });
   }, []);
 
   React.useEffect(() => {
-    document.title = partner.name || 'Огромное сердце';
-  }, [partner.name]);
+    document.title = task.title;
+  }, [task.title]);
 
-  const loading = Object.keys(partner).length === 0;
+  const loading = Object.keys(task).length === 0;
 
   return (
     <Layout>
       <Loader loading={loading} fullscreen />
       <MainSection>
         <Container>
-          <BackLink to="/">
+          <BackLink to="/profile/">
             <Button>
               <BackIcon icon={faHandPointLeft} />
-                К списку партнёров
+                К списку задач
             </Button>
           </BackLink>
-          {!loading && <PartnerDescription {...partner} />}
+          {!loading && <TaskDescription {...task} />}
         </Container>
       </MainSection>
     </Layout>

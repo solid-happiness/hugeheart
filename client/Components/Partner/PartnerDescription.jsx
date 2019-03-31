@@ -16,7 +16,6 @@ const Container = styled(Card)`
   }
 `;
 
-
 const Content = styled(Typography)`
     && {
         font-size: 1rem;

@@ -20,7 +20,6 @@ import Search from '@material-ui/icons/Search';
 import Close from '@material-ui/icons/Close';
 import Header from '../Header';
 import SearchTasksBar from './SearchTasksBar';
-import { getDate } from '../../helpers';
 import AddTask from './AddTask';
 
 const Wrapper = styled.div`
@@ -100,6 +99,7 @@ const TaskLink = styled(Link)`
   && {
     color: #2c348e;
     text-decoration: none;
+    font-size: 1.3rem;
   }
 `;
 
@@ -264,9 +264,6 @@ const Tasks = ({
           description,
           statusVerbose,
           author,
-          createDate,
-          deadline,
-          tags: taskTags,
           eventTitle,
         }) => (
           <Card key={id}>
@@ -291,15 +288,6 @@ const Tasks = ({
                 <Typography color="textSecondary">
                   {`Автор: ${author}`}
                 </Typography>
-                <Typography color="textSecondary">
-                  {`Дата создания: ${getDate(createDate)}`}
-                </Typography>
-                <Typography color="textSecondary">
-                  {`Дедлайн: ${getDate(deadline)}`}
-                </Typography>
-                <Typography color="textSecondary">
-                  {`Теги: ${taskTags.map(taskTag => `#${taskTag}`).join(', ')}`}
-                </Typography>
               </AdditionalInfo>
             </CardContent>
           </Card>
@@ -317,9 +305,6 @@ const Tasks = ({
 const styles = {
   title: {
     fontFamily: 'BloggerSansBold',
-  },
-  media: {
-    paddingTop: '56.25%',
   },
 };
 

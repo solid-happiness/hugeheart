@@ -8,5 +8,5 @@ export const getCSRFToken = () => cookie.parse(document.cookie).csrftoken;
 
 export const getDate = (strDate) => {
   const date = new Date(strDate);
-  return `${date.getDate()}/${date.getMonth() + 1}/${date.getYear()}`;
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 };

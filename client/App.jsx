@@ -15,6 +15,7 @@ import BloggerSansLightEot from './fonts/BloggerSans-Light.eot';
 import BloggerSansLightTtf from './fonts/BloggerSans-Light.ttf';
 import BloggerSansLightWoff from './fonts/BloggerSans-Light.woff';
 import Partner from './Components/Partner';
+import Task from './Components/Task';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="/" component={Home} exact />
           <Route path="/profile/" component={Profile} />
           <Route path="/partners/:partnerSlug/" component={Partner} />
+          <Route path="/task/:taskId/" component={Task} />
         </Router>
       </MuiThemeProvider>
     </>
