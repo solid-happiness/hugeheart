@@ -36,12 +36,18 @@ def get_tasks(request):
     })
 
 
+@login_required
 def get_task(request, task_id):
     """
     View, которая возвращает JSON с информацией о задаче, с id task_id.
     Доступна по /api/tasks/<task_id>
     """
-    return JsonResponse()
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        return JsonResponse({})
+
+    return JsonResponse(task.to_dict())
 
 
 def search(request):
