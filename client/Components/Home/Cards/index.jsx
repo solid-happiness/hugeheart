@@ -8,7 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Header from '../Header';
+import Header from '../../Header';
 
 const Wrapper = styled.div`
   display: flex;
