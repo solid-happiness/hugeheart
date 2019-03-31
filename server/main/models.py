@@ -189,7 +189,7 @@ class InteractionHistory(models.Model):
     interaction_link = models.CharField(
         'Канал связи',
         choices=COMMUNICATION_METHODS,
-        max_length=1,
+        max_length=10,
     )
     date_time = models.DateTimeField(
         'Дата и время взамодействия',

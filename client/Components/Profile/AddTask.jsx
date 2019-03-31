@@ -119,6 +119,7 @@ const AddTask = ({
       <AddTaskButton
         variant="outlined"
         onClick={() => setShowAddForm(true)}
+        color="primary"
       >
           Добавить задачу
       </AddTaskButton>

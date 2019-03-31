@@ -102,7 +102,7 @@ def create_interaction_history(request):
         partner=Partner.objects.get(slug=slug),
         interaction_link=params.get('interactionLink'),
         date_time=params.get('dateTime'),
-        about=f'{params.get('about')} \nАвтор: {request.user.userprofile.get_full_name() or request.user.userprofile.username}',
+        about=f'{params.get("about")} \nАвтор: {request.user.userprofile.get_full_name() or request.user.userprofile.username}',
         result=params.get('result'),
     )
     return get_partner(request, slug)

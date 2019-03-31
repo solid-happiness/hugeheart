@@ -33,10 +33,12 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
   grid-column-gap: 15px;
   grid-row-gap: 25px;
   margin: 25px;
+  width: 100%;
+  justify-content: center;
 `;
 
 const OutlinedInput = styled(OutlinedInputMaterialUi)`
