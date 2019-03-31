@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -54,9 +56,9 @@ def search(request):
     query = request.GET.get('query')
     tasks = Task.objects.filter(
         Q(title__icontains=query) |
-        Q(description__icontains=query) | 
+        Q(description__icontains=query) |
         Q(tags__tag__icontains=query) |
-        Q(event__slug__icontains=query) | 
+        Q(event__slug__icontains=query) |
         Q(event__name__icontains=query)
     ).distinct()
 
@@ -72,14 +74,14 @@ def create_task(request):
     event = Event.objects.get(slug=params.get('event'))
     author = UserProfile.objects.get(user=request.user)
     task = Task.objects.create(
-        level=params.get('level'), 
-        title=params.get('title'),  
-        description=params.get('description'), 
+        level=params.get('level'),
+        title=params.get('title'),
+        description=params.get('description'),
         event=event,
         author=author,
-        need_performers = params.get('needPerformers'),
-        deadline = params.get('deadline'),
-        priority = params.get('priority'),
+        need_performers=params.get('needPerformers'),
+        deadline=params.get('deadline'),
+        priority=params.get('priority'),
     )
     performers = UserProfile.objects.filter(username__in=params.get('performers'))
     task.task_performers.set(performers)
@@ -90,4 +92,8 @@ def create_task(request):
         except Tag.DoesNotExist:
             t = Tag.objects.create(tag=tag)
         task_tags.append(t)
+
+    if params.get('needPerformers'):
+        task_tags.append(Tag.objects.get(tag='Нужна помощь'))
+
     task.tags.set(task_tags)
