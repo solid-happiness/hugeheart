@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from .models import Task, Tag
 from events.models import Event
@@ -45,7 +46,13 @@ def get_task(request, task_id):
 
 def search(request):
     query = request.GET.get('query')
-    tasks = Task.objects.filter(title__icontains=query)
+    tasks = Task.objects.filter(
+        Q(title__icontains=query) |
+        Q(description__icontains=query) | 
+        Q(tags__tag__icontains=query) |
+        Q(event__slug__icontains=query) | 
+        Q(event__name__icontains=query)
+    )
 
     return JsonResponse({
         'tasks': [task.to_dict() for task in tasks],
