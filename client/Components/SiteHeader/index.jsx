@@ -223,7 +223,7 @@ const SiteHeader = ({ theme, dispatchUserData, user }) => {
             color="primary"
             main
           >
-            Доброе сердце
+            Огромное сердце
           </HeaderText>
         </Logo>
       </HomePageLink>
