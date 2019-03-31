@@ -1,7 +1,7 @@
 import json
 
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import ValidationError
 from django.db import IntegrityError
@@ -62,6 +62,11 @@ def login_view(request):
 
     else:
         return JsonResponse({'auth': False})
+
+    
+def log_out_view(request):
+    logout(request)
+    return JsonResponse({'auth': False})
 
 
 def create_user_profile(request):
