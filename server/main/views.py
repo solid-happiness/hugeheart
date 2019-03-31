@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import ValidationError
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 
 from .models import Partner, UserProfile
@@ -69,6 +70,7 @@ def log_out_view(request):
     return JsonResponse({'auth': False})
 
 
+@login_required
 def create_user_profile(request):
     try:
         user = UserProfile.objects.create_user(

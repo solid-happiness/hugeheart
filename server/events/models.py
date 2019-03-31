@@ -61,3 +61,10 @@ class Event(models.Model):
             "date": self.date,
             "shortDescription": self.short_description
         }
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        verbose_name = 'Мероприятие'
+        verbose_name_plural = 'Мероприятия'
