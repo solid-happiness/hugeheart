@@ -58,7 +58,7 @@ def search(request):
         Q(tags__tag__icontains=query) |
         Q(event__slug__icontains=query) | 
         Q(event__name__icontains=query)
-    )
+    ).distinct()
 
     return JsonResponse({
         'tasks': [task.to_dict() for task in tasks],
