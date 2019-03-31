@@ -17,6 +17,7 @@ const FormGroupControl = ({
   value,
   render,
   alignItems,
+  multiline,
   showErrors,
 }) => (
   <Grid item xs={12} container alignItems={alignItems} justify="center">
@@ -49,10 +50,11 @@ const FormGroupControl = ({
               fullWidth
               disabled={disabled}
               value={value}
+              multiline={multiline}
             />
           </>
         )
-            }
+        }
     </Grid>
   </Grid>
 );
@@ -69,6 +71,7 @@ FormGroupControl.defaultProps = {
   render: null,
   alignItems: 'center',
   showErrors: false,
+  multiline: false,
 };
 
 FormGroupControl.propTypes = {
@@ -86,10 +89,16 @@ FormGroupControl.propTypes = {
   ]),
   disabled: PropTypes.bool,
   required: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  value: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   render: PropTypes.func,
   alignItems: PropTypes.string,
   showErrors: PropTypes.bool,
+  multiline: PropTypes.bool,
 };
 
 export default FormGroupControl;

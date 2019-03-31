@@ -48,7 +48,8 @@ def get_task(request, task_id):
     """
     try:
         task = Task.objects.get(id=task_id)
-        comments = [comment.to_dict() for comment in task.taskcomment_set.all()]
+        comments = [comment.to_dict()
+                    for comment in task.taskcomment_set.all()]
     except Task.DoesNotExist:
         return JsonResponse({})
 
@@ -72,14 +73,17 @@ def search(request):
 
 
 def get_users(request):
-    users = [{'username': user.username, 'fullName': user.get_full_name()} for user in UserProfile.objects.exclude(role='admin')]
+    users = [{'username': user.username, 'fullName': user.get_full_name()}
+             for user in UserProfile.objects.exclude(role='admin')]
     return JsonResponse({'users': users})
+
 
 def create_task(request):
     params = json.loads(request.body.decode('utf8'))
 
     event = Event.objects.get(slug=params.get('event'))
-    author = UserProfile.objects.get(user=request.user.userprofile)
+    author = UserProfile.objects.get(
+        username=request.user.userprofile.username)
     task = Task.objects.create(
         level=params.get('level'),
         title=params.get('title'),
@@ -90,14 +94,20 @@ def create_task(request):
         deadline=params.get('deadline'),
         priority=params.get('priority'),
     )
-    performers = UserProfile.objects.filter(username__in=params.get('performers'))
+    performers = UserProfile.objects.filter(
+        username__in=params.get('performers'))
     task.task_performers.set(performers)
 
-    task_tags = [Tag.objects.get_or_create(tag=tag) for tag in params.get('tags')]
+    task_tags = [
+        Tag.objects.get_or_create(tag=tag)[0]
+        for tag in params.get('tags')
+    ]
+
     if params.get('needPerformers'):
-        task_tags.append(Tag.objects.get(tag='Нужна помощь'))
+        task_tags.append(Tag.objects.get_or_create(tag='Нужна помощь')[0])
+
     task.tags.set(task_tags)
-    return JsonResponse(rask.to_dict())
+    return JsonResponse(task.to_dict())
 
 
 def change_task_status(request):

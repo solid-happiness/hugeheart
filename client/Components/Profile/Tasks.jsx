@@ -21,6 +21,7 @@ import Close from '@material-ui/icons/Close';
 import Header from '../Header';
 import SearchTasksBar from './SearchTasksBar';
 import { getDate } from '../../helpers';
+import AddTask from './AddTask';
 
 const Wrapper = styled.div`
   display: flex;
@@ -155,6 +156,7 @@ const Tasks = ({
   events,
   tags,
   classes,
+  setLoadingTasks,
 }) => {
   const [showEventsSelector, setShowSelector] = React.useState(true);
   const [showSearchBar, setShowSearchBar] = React.useState(false);
@@ -202,7 +204,7 @@ const Tasks = ({
         </Grid>
         <Grid item xs={2} sm={1}>
           <Fab
-            color="secondary"
+            color="primary"
             aria-label="search"
             onClick={() => handleSearchButtonClick({
               showEventsSelector,
@@ -296,6 +298,11 @@ const Tasks = ({
           </Card>
         ))}
       </Container>
+      <AddTask
+        events={events}
+        tasks={tasks}
+        setLoadingTasks={setLoadingTasks}
+      />
     </Wrapper>
   );
 };
@@ -314,6 +321,7 @@ Tasks.propTypes = {
   tasks: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
+  setLoadingTasks: PropTypes.func.isRequired,
 };
 
 export default withRouter(

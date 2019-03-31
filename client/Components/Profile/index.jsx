@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Layout from '../Layout';
 import MainSection from '../MainSection';
@@ -62,6 +62,8 @@ const UserProfile = () => {
     },
   );
 
+  const [loadingTasks, setLoadingTasks] = useState('load');
+
   React.useEffect(() => {
     const loadTasks = async () => {
       dispatch({
@@ -115,14 +117,19 @@ const UserProfile = () => {
     };
 
     loadTasks();
-  }, []);
+  }, [loadingTasks]);
 
   return (
     <Layout>
       <MainSection>
         <Container>
           <Loader fullscreen loading={tasksLoading} />
-          <Tasks tasks={tasks} events={events} tags={tags} />
+          <Tasks
+            tasks={tasks}
+            events={events}
+            tags={tags}
+            setLoadingTasks={setLoadingTasks}
+          />
           <AddUserProfile />
         </Container>
       </MainSection>
