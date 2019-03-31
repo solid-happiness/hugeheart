@@ -87,6 +87,7 @@ class Task(models.Model):
             "status": self.status,
             "statusVerbose": self.get_status_display(),
             "event": self.event.slug,
+            "eventTitle": self.event.title,
             "performers": [performer.get_full_name() or performer.username for performer in self.task_performers.all()],
             "needPerformers": self.need_performers,
             "createDate": self.create_date,
