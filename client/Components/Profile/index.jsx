@@ -20,8 +20,7 @@ const Container = styled.div`
 
 const TASKS_ACTIONS = {
   SET_LOADING: 0,
-  SET_TASKS: 1,
-  SET_EVENTS: 2,
+  SET_DATA: 1,
 };
 
 const tasksReducer = (state, action) => {
@@ -31,13 +30,7 @@ const tasksReducer = (state, action) => {
         ...state,
         loading: action.loading,
       };
-    case TASKS_ACTIONS.SET_EVENTS:
-      return {
-        ...state,
-        ...action.payload,
-      };
-
-    case TASKS_ACTIONS.SET_TASKS:
+    case TASKS_ACTIONS.SET_DATA:
       return {
         ...state,
         ...action.payload,
@@ -53,12 +46,19 @@ const UserProfile = () => {
     document.title = 'Личный кабинет';
   }, []);
 
-  const [{ loading: tasksLoading, tasks, events }, dispatch] = React.useReducer(
+  const [{
+    loading:
+    tasksLoading,
+    tasks,
+    events,
+    tags,
+  }, dispatch] = React.useReducer(
     tasksReducer,
     {
       loading: false,
       tasks: [],
       events: [],
+      tags: [],
     },
   );
 
@@ -88,13 +88,24 @@ const UserProfile = () => {
       await sleep(1000);
 
       dispatch({
-        type: TASKS_ACTIONS.SET_TASKS,
+        type: TASKS_ACTIONS.SET_DATA,
         payload: loadedTasks,
       });
 
       dispatch({
-        type: TASKS_ACTIONS.SET_EVENTS,
+        type: TASKS_ACTIONS.SET_DATA,
         payload: loadedEvents,
+      });
+
+      const loadedTags = [
+        ...new Set(
+          loadedTasks.tasks.reduce((acc, { tags: taskTags }) => [...acc, ...taskTags], []),
+        ),
+      ];
+
+      dispatch({
+        type: TASKS_ACTIONS.SET_DATA,
+        payload: { tags: loadedTags },
       });
 
       dispatch({
@@ -111,7 +122,7 @@ const UserProfile = () => {
       <MainSection>
         <Container>
           <Loader fullscreen loading={tasksLoading} />
-          <Tasks tasks={tasks} events={events} />
+          <Tasks tasks={tasks} events={events} tags={tags} />
           <AddUserProfile />
         </Container>
       </MainSection>

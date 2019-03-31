@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { withTheme, withStyles } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabelMaterialUi from '@material-ui/core/InputLabel';
@@ -20,13 +20,14 @@ import Search from '@material-ui/icons/Search';
 import Close from '@material-ui/icons/Close';
 import Header from '../Header';
 import SearchTasksBar from './SearchTasksBar';
-
+import { getDate } from '../../helpers';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 55px 25px 25px 25px;
+  width: 90%;
 `;
 
 const Container = styled.div`
@@ -92,14 +93,73 @@ const handleSearchButtonClick = ({
   }
 };
 
+const TaskLink = styled(Link)`
+  && {
+    color: #2c348e;
+    text-decoration: none;
+  }
+`;
+
+const AdditionalInfo = styled.div`
+  margin-top: 25px;
+`;
+
+const TagsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  width: 100%;
+  grid-column-gap: 10px;
+  grid-row-gap: 5px;
+  margin-top: 15px;
+`;
+
+const TagButton = styled(({ selected, ...rest }) => <Button {...rest} />)`
+  && {
+    font-family: 'BloggerSansBold';
+    color: ${({ selected }) => (selected ? '#fff' : '#2c348e')};
+    background-color: ${({ selected }) => (selected ? '#2c348e' : '#fff')};
+    border: 1px solid #2c348e;
+    border-radius: 25px;
+    padding: 0;
+    text-transform: none;
+  }
+
+  ${({ selected }) => (selected && `
+    &&:hover {
+      background-color: #2c348e;
+    }
+  `)}
+`;
+
+const getFilteredTasks = (
+  tasks,
+  selectedTags,
+  eventSlug,
+) => {
+  if (!selectedTags.length) {
+    return tasks;
+  }
+
+  const eventFilteredTasks = eventSlug
+    ? tasks.filter(({ tags }) => tags.includes(eventSlug))
+    : tasks;
+
+  const selectedTagsSet = new Set(selectedTags);
+  return eventFilteredTasks.filter(({ tags: taskTags }) => taskTags.filter(
+    taskTag => selectedTagsSet.has(taskTag),
+  ).length > 0);
+};
+
 const Tasks = ({
   tasks,
   events,
+  tags,
   classes,
 }) => {
   const [showEventsSelector, setShowSelector] = React.useState(true);
   const [showSearchBar, setShowSearchBar] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = React.useState('');
+  const [selectedTags, setSelectedTags] = React.useState([]);
 
   return (
     <Wrapper>
@@ -160,25 +220,78 @@ const Tasks = ({
           </Fab>
         </Grid>
       </ControlsBar>
+      <TagsContainer>
+        {tags.map((tag) => {
+          const selected = selectedTags.includes(tag);
+
+          return (
+            <TagButton
+              selected={selected}
+              key={tag}
+              variant={selected ? 'contained' : 'outlined'}
+              onClick={() => {
+                if (selected) {
+                  setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
+                  return;
+                }
+
+                setSelectedTags([...selectedTags, tag]);
+              }}
+            >
+              {tag}
+            </TagButton>
+          );
+        })}
+      </TagsContainer>
       <Container>
-        {tasks.map(({
+        {getFilteredTasks(
+          tasks,
+          selectedTags,
+          selectedEvent,
+        ).map(({
           id,
-          name,
+          title,
           shortDescription,
           description,
+          statusVerbose,
+          author,
+          createDate,
+          deadline,
+          tags: taskTags,
+          eventTitle,
         }) => (
           <Card key={id}>
             <CardHeader
-              title={name}
+              title={<TaskLink to={`/task/${id}/`}>{title}</TaskLink>}
               subheader={shortDescription}
               classes={{
                 title: classes.title,
               }}
             />
             <CardContent>
-              <Typography component="p">
+              <Typography>
                 {description}
               </Typography>
+              <AdditionalInfo>
+                <Typography color="textSecondary">
+                  {`Мероприятие: ${eventTitle}`}
+                </Typography>
+                <Typography color="textSecondary">
+                  {`Статус: ${statusVerbose}`}
+                </Typography>
+                <Typography color="textSecondary">
+                  {`Автор: ${author}`}
+                </Typography>
+                <Typography color="textSecondary">
+                  {`Дата создания: ${getDate(createDate)}`}
+                </Typography>
+                <Typography color="textSecondary">
+                  {`Дедлайн: ${getDate(deadline)}`}
+                </Typography>
+                <Typography color="textSecondary">
+                  {`Теги: ${taskTags.map(taskTag => `#${taskTag}`).join(', ')}`}
+                </Typography>
+              </AdditionalInfo>
             </CardContent>
           </Card>
         ))}
@@ -190,7 +303,6 @@ const Tasks = ({
 const styles = {
   title: {
     fontFamily: 'BloggerSansBold',
-    color: 'rgba(0, 0, 0, 0.70)',
   },
   media: {
     paddingTop: '56.25%',
@@ -201,6 +313,7 @@ Tasks.propTypes = {
   classes: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
 };
 
 export default withRouter(
