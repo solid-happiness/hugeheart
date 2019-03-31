@@ -46,10 +46,11 @@ def get_task(request, task_id):
     """
     try:
         task = Task.objects.get(id=task_id)
+        comments = [comment.to_dict() for comment in task.taskcomment_set.all()]
     except Task.DoesNotExist:
         return JsonResponse({})
 
-    return JsonResponse(task.to_dict())
+    return JsonResponse({**task.to_dict(), 'comments': comments})
 
 
 def search(request):
