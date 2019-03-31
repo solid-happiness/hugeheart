@@ -69,6 +69,10 @@ def search(request):
     })
 
 
+def get_users(request):
+    users = [{'username': user.username, 'fullName': user.get_full_name()} for user in UserProfile.objects.exclude(role='admin')]
+    return JsonResponse({'users': users})
+
 def create_task(request):
     params = json.loads(request.body.decode('utf8'))
 
