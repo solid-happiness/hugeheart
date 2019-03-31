@@ -4,6 +4,8 @@ import Layout from '../Layout';
 import MainSection from '../MainSection';
 import Loader from '../Loader';
 import AddUserProfile from './AddUserProfile';
+import Tasks from './Tasks';
+import sleep from '../../helpers/sleep';
 
 const Container = styled.div`
     position: relative;
@@ -16,19 +18,26 @@ const Container = styled.div`
     padding: 0 15px;
 `;
 
-const ROOM_ACTIONS = {
+const TASKS_ACTIONS = {
   SET_LOADING: 0,
-  SET_NEW_PROFILE: 1,
+  SET_TASKS: 1,
+  SET_EVENTS: 2,
 };
 
-const rooms = (state, action) => {
+const tasksReducer = (state, action) => {
   switch (action.type) {
-    case ROOM_ACTIONS.SET_LOADING:
+    case TASKS_ACTIONS.SET_LOADING:
       return {
         ...state,
         loading: action.loading,
       };
-    case ROOM_ACTIONS.SET_NEW_PROFILE:
+    case TASKS_ACTIONS.SET_EVENTS:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
+    case TASKS_ACTIONS.SET_TASKS:
       return {
         ...state,
         ...action.payload,
@@ -40,23 +49,69 @@ const rooms = (state, action) => {
 };
 
 const UserProfile = () => {
-  const [room] = React.useReducer(
-    rooms,
+  React.useEffect(() => {
+    document.title = 'Личный кабинет';
+  }, []);
+
+  const [{ loading: tasksLoading, tasks, events }, dispatch] = React.useReducer(
+    tasksReducer,
     {
       loading: false,
-      menu: [],
+      tasks: [],
+      events: [],
     },
   );
 
   React.useEffect(() => {
-    document.title = 'Личный кабинет';
+    const loadTasks = async () => {
+      dispatch({
+        type: TASKS_ACTIONS.SET_LOADING,
+        loading: true,
+      });
+
+      const loadedTasks = await (await fetch(
+        '/api/tasks/',
+        {
+          method: 'GET',
+          credentials: 'same-origin',
+        },
+      )).json();
+
+      const loadedEvents = await (await fetch(
+        '/api/events/',
+        {
+          method: 'GET',
+          credentials: 'same-origin',
+        },
+      )).json();
+
+      await sleep(1000);
+
+      dispatch({
+        type: TASKS_ACTIONS.SET_TASKS,
+        payload: loadedTasks,
+      });
+
+      dispatch({
+        type: TASKS_ACTIONS.SET_EVENTS,
+        payload: loadedEvents,
+      });
+
+      dispatch({
+        type: TASKS_ACTIONS.SET_LOADING,
+        loading: false,
+      });
+    };
+
+    loadTasks();
   }, []);
 
   return (
     <Layout>
       <MainSection>
         <Container>
-          <Loader fullscreen loading={room.loading} />
+          <Loader fullscreen loading={tasksLoading} />
+          <Tasks tasks={tasks} events={events} />
           <AddUserProfile />
         </Container>
       </MainSection>
