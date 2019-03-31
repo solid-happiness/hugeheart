@@ -97,6 +97,7 @@ def create_task(request):
     if params.get('needPerformers'):
         task_tags.append(Tag.objects.get(tag='Нужна помощь'))
     task.tags.set(task_tags)
+    return JsonResponse(rask.to_dict())
 
 
 def change_task_status(request):
