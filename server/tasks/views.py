@@ -40,3 +40,13 @@ def get_task(request, task_id):
     Доступна по /api/tasks/<task_id>
     """
     return JsonResponse()
+
+
+def search(request):
+    query = request.GET.get('query')
+    tasks = Task.objects.filter(title__icontains=query)
+
+    return JsonResponse({
+        'tasks': [task.to_dict() for task in tasks],
+        'query': query,
+    })

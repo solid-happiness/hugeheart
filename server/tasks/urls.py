@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.get_tasks),
+    path('search/', views.search),
 ]
