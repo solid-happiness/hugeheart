@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
 import { withTheme, withStyles } from '@material-ui/core';
@@ -44,6 +45,7 @@ const PartnerButton = styled(Button)`
 const Partners = ({
   partners,
   classes,
+  user,
 }) => (
   <Wrapper>
     <Header color="primary">Партнёры</Header>
@@ -57,13 +59,16 @@ const Partners = ({
       }) => (
         <Card key={id}>
           <CardHeader
-            title={(
-              <PartnerLink to={`/partners/${slug}/`}>
-                <PartnerButton variant="outlined" color="primary">
-                  {name}
-                </PartnerButton>
-              </PartnerLink>
-            )}
+            title={user.auth
+              ? (
+                <PartnerLink to={`/partners/${slug}/`}>
+                  <PartnerButton variant="outlined" color="primary">
+                    {name}
+                  </PartnerButton>
+                </PartnerLink>
+              )
+              : name
+          }
             classes={{
               title: classes.title,
             }}
@@ -99,8 +104,11 @@ const styles = {
 Partners.propTypes = {
   classes: PropTypes.object.isRequired,
   partners: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = ({ user }) => ({ user });
+
 export default withRouter(
-  withStyles(styles)(withTheme()(Partners)),
+  connect(mapStateToProps)(withStyles(styles)(withTheme()(Partners))),
 );
