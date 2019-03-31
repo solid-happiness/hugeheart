@@ -13,11 +13,11 @@ def get_tasks(request):
     View, которая возвращает JSON с информацией о задачах, автором которых является конкретный пользователь.
     Доступна по /api/tasks
     """
-    user = request.user
+    user = request.user.userprofile
 
-    if user.userprofile.role == 'admin':
+    if user.role == 'admin':
         tasks = Task.objects.all()
-    elif user.userprofile.role == 'organizer':
+    elif user.role == 'organizer':
         try:
             events = Event.objects.filter(responsible=user)
         except Event.DoesNotExist:
@@ -25,7 +25,7 @@ def get_tasks(request):
 
         tasks = [event.tasks.get() for event in events]
 
-    elif user.userprofile.role == 'volunteer':
+    elif user.role == 'volunteer':
         try:
             tasks = Task.objects.filter(task_performers=user)
         except Task.DoesNotExist:
