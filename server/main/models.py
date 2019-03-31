@@ -206,6 +206,7 @@ class InteractionHistory(models.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'interactionLink': self.interaction_link,
             'interactionLinkVerbose': self.get_interaction_link_display(),
             'dateTime': self.date_time,
