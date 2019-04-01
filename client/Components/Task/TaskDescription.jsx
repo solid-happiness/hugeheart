@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { getDate } from '../../helpers';
+import Header from '../Header';
 
 const Container = styled(Card)`
   && {
@@ -31,6 +32,23 @@ const AdditionalInfo = styled.div`
   margin-top: 25px;
 `;
 
+const InteractionHistoryContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
+`;
+
+const Communications = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-row-gap: 15px;
+  grid-column-gap: 25px;
+  width: 90%;
+`;
+
+const InteractionHistoryElement = styled(Card)``;
+
 const TaskDescription = ({
   title,
   shortDescription,
@@ -42,6 +60,7 @@ const TaskDescription = ({
   tags: taskTags,
   eventTitle,
   classes,
+  comments,
 }) => (
   <>
     <Container>
@@ -98,6 +117,34 @@ const TaskDescription = ({
         </CardContent>
       </Card>
     </Container>
+    {Boolean(comments.length) && (
+      <InteractionHistoryContainer>
+        <Header>Комментарии</Header>
+        <Communications>
+          {comments.map(comment => (
+            <InteractionHistoryElement key={comments.id}>
+              <DescriptionBlock>
+                <DescriptionTitle>Автор</DescriptionTitle>
+                <Typography color="textSecondary" variant="body1" inline>
+                  {comment.author}
+                </Typography>
+              </DescriptionBlock>
+              <DescriptionBlock>
+                <Typography color="textSecondary" variant="body1" inline>
+                  {comment.commentText}
+                </Typography>
+              </DescriptionBlock>
+              <DescriptionBlock>
+                <DescriptionTitle>Время отправки комментария</DescriptionTitle>
+                <Typography color="textSecondary" variant="body1" inline>
+                  {getDate(comment.dateTimeCreate)}
+                </Typography>
+              </DescriptionBlock>
+            </InteractionHistoryElement>
+          ))}
+        </Communications>
+      </InteractionHistoryContainer>
+    )}
   </>
 );
 
@@ -116,6 +163,7 @@ TaskDescription.propTypes = {
   classes: PropTypes.object.isRequired,
   shortDescription: PropTypes.string,
   description: PropTypes.string.isRequired,
+  comments: PropTypes.array.isRequired,
 };
 
 const styles = {

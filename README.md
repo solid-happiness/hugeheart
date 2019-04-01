@@ -1,9 +1,8 @@
 
 # [Огромное сердце](https://огромноесердце.рф)
 
- Это сайт задания для финала [BEST Hack'19](https://vk.com/besthack2019).
-
- Тестовые данные для входа отправлены в письме.
+Сайт задания для финала [BEST Hack'19](https://vk.com/besthack2019).
+Тестовые данные для входа отправлены в письме.
 
 ## Технологии
 * [React](https://reactjs.org/) &mdash; современная JS-библиотека для разработки пользовательских интерфейсов.
@@ -14,48 +13,46 @@
 ## Запуск локальной версии проекта*
 
 #### 1. Склонировать репозиторий
+```bash
+$ git clone https://github.com/solid-happiness/hugeheart.git
+```
 
 #### 2. Создать и запустить виртуальное окружение
-```
+```bash
 $ python3 -m venv server/venv
 $ source server/venv/bin/activate
 ```
 
 #### 3. Установить зависимости
-```
+```bash
 $ pip install -r requirements.txt
 $ npm install
 ```
 
 #### 4. Создать базу данных
-Зайти в консоль postgres:
-```
+Зайти в консоли postgres:
+```bash
 $ sudo -u postgres psql
 ```
 
-И выполнить следующие команды:
+Создать базу данных:
 ```postgresql
 create user hugeheart with password 'qwerty';
 create database hugeheart_db owner hugeheart;
 ```
 
-#### 5. Заполнить базу данных
-```
-$ cd fixtures
-$ unzip db-dump.zip
-$ cd ..
-$ sudo -u postgres psql solid_happines_db < fixtures/dump.pgsql
-$ mkdir media
-$ cp -r fixtures/pictures/* media
+Выполнить миграции:
+```bash
+$ python src/manage.py migrate
 ```
 
-#### 6. Запустить проект
+#### 5. Запустить проект
 В первой консоли запустить сборку клиентской части:
-```
+```bash
 $ npm run start
 ```
 Во второй консоли запустить django-сервер:
-```
+```bash
 $ python server/manage.py runserver
 ```
 

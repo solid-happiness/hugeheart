@@ -131,6 +131,7 @@ class TaskComment(models.Model):
 
     def to_dict(self):
         return {
+            "id": self.pk,
             "author": self.author.get_full_name() or self.author.username or '',
             "commentText": self.text,
             "dateTimeCreate": self.datetime,
